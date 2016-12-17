@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 // eg article
 /*
 {
@@ -23,15 +24,15 @@ type Article {
   description: String
   url: String!
   urlToImage: String
-  publishedAt: String!
+  publishedAt: String
 }
 type NewsFeed {
-  status: String!
+  status: String
   source: String
   sortBy: String
   articles: [Article]
 }
-`
+`,
 ];
 
 // sources schema
@@ -81,8 +82,8 @@ type Source {
   medium: String
   large: String
   }
-`
-]
+`,
+];
 
 const schema = [...SourcesSchema, ...ArticleSchema];
 export default schema;
