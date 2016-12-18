@@ -17,6 +17,29 @@ enum SortType {
   # Requests a list of the source's current most popular or currently trending headlines.
   popular
 }
+
+  enum Language {
+  # English
+  en
+  # German
+  de
+  # French
+  fr
+  }
+  enum Country {
+  # Australia
+  au
+  # Germany
+  de
+  # Great Britain
+  gb
+  # India
+  in
+  # Italy
+  it
+  # USA
+  us
+  }
 type Query {
   # News feed
   feed(
@@ -29,6 +52,14 @@ type Query {
     # The number of items to fetch starting from the offset, for pagination
     limit: Int
   ): [NewsFeed]
+  sources(
+    # The category you would like to get sources for. Possible options: business, entertainment, gaming, general, music, science-and-nature, sport, technology. Default: empty (all sources returned)
+    category: String,
+    # The 2-letter ISO-639-1 code of the language you would like to get sources for. Possible options: en, de, fr. Default: empty (all sources returned)
+    language: Language,
+    # The 2-letter ISO 3166-1 code of the country you would like to get sources for. Possible options: au, de, gb, in, it, us. Default: empty (all sources returned)
+    country: Country
+    ): [Sources]
 }
 schema {
   query: Query
@@ -49,7 +80,22 @@ const rootResolvers = {
           source, // required
           sortBy, // optional
         }).then(articlesResponse => resolve([articlesResponse]))
-            .catch(error => reject(error));
+          .catch(error => reject(error));
+      });
+    },
+    sources(root, {
+      category,
+      language,
+      country,
+    }, /* context */) {
+      return new Promise((resolve, reject) => {
+        // To query sources
+        newsapi.sources({
+          category, // optional
+          language, // optional
+          country, // optional
+        }).then(sourcesResponse => resolve([sourcesResponse]))
+          .catch(error => reject(error));
       });
     },
   },
